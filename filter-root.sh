@@ -1,6 +1,12 @@
 #!/bin/bash
 
 json=$(curl -s "https://explorer.ark.io/api/peers?page=1")
+
+if [ -z $json ]; then
+  echo "API Offline!"
+  exit 1
+fi
+
 pages=$(jq -n $json | jq .meta.pageCount)
 page=1
 declare -a ips=()
@@ -18,6 +24,11 @@ while [ $page -le $pages ]; do
   done
   ((page++))
 done
+
+if [ "${#ips[@]}" -lt 51 ]; then
+  echo "Not Enough Peers!"
+  exit 1
+fi
 
 ufw delete allow 4001 > /dev/null 2>&1
 ufw delete allow 4001/tcp > /dev/null 2>&1
