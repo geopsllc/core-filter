@@ -1,4 +1,4 @@
-# Apply UFW filter for port 4001 to allow only access from current network nodes.
+# P2P Port Filter
 
 ## Installation
 
